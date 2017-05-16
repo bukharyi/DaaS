@@ -1,0 +1,4 @@
+server ns1.focus.my
+zone focus.my
+update del kambing.focus.my
+send
