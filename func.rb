@@ -1,5 +1,6 @@
 require 'csv'
 require 'json'
+require 'json'
 require 'sysrandom'
 CSVFILE	="nodes.csv"
 KEYFILE	="ddns.key"
@@ -37,25 +38,27 @@ def nodeDescribe
 	return nodeInfo
 end
 ########################
-##Add record
+##Add record to NS
 ########################
 def recordAdd(namespace, subdomain)
-#record		= {subdomain, nil=autogen}
-#namespace	= {ns, nil=autogen}
-
-# subdomain  empty, generate subdomain
-if subdomain.empty?
-	subdomain=Sysrandom.hex(10)
-end
-#if namespace empty? add to main zone
-if namespace.empty?
-	subdom="#{subdomain}.#{ZONE}"
-  else
-	 subdom="#{subdomain}.#{namespace}.#{ZONE}"
-end
-
-genfileAdd(subdom)
-nsupdate
+   #receive 
+   #subdomain	= {subdomain, nil=autogen}
+   #namespace	= {ns, nil}
+    
+    # subdomain  empty, generate subdomain
+    if subdomain.empty?
+    	subdomain=Sysrandom.hex(10)
+    end
+    #if namespace empty? add to main zone
+    if namespace.empty?
+    	subdom="#{subdomain}.#{ZONE}"
+      else
+    	 subdom="#{subdomain}.#{namespace}.#{ZONE}"
+    end
+    
+    genfileAdd(subdom)
+    output=nsupdate
+    return output
 
 end
 ########################
@@ -63,13 +66,14 @@ end
 ########################
 def genfileAdd(subdomain)
   system("echo \"server #{PRIMARYNS}\" 	>  #{OUTPUTFILE}")
-  system("echo \"debug yes \" 		>> #{OUTPUTFILE}")
+  #system("echo \"debug yes \" 		>> #{OUTPUTFILE}")
   system("echo \"zone #{ZONE} \" 		>> #{OUTPUTFILE}")
 
   #for each node IP, add domain
   CSV.foreach(CSVFILE) { |row| 
   	system("echo \"update add #{subdomain} 60000 A #{row[1]} \" 	>> #{OUTPUTFILE}")
   }
+  system("echo \"show \"                    >> #{OUTPUTFILE}")
   system("echo \"send\"			>> #{OUTPUTFILE}")
 end
 ########################
@@ -77,9 +81,10 @@ end
 ########################
 def genfileDel(subdomain)
   system("echo \"server #{PRIMARYNS}\"      >  #{OUTPUTFILE}")
-  system("echo \"debug yes \"               >> #{OUTPUTFILE}")
+  #system("echo \"debug yes \"               >> #{OUTPUTFILE}")
   system("echo \"zone #{ZONE} \"            >> #{OUTPUTFILE}")
   system("echo \"update del #{subdomain} \" >> #{OUTPUTFILE}")
+  system("echo \"show \"                    >> #{OUTPUTFILE}")
   system("echo \"send\"                     >> #{OUTPUTFILE}")
 end
 
@@ -87,7 +92,14 @@ end
 ##execute dnsupdate
 ########################
 def nsupdate
-  system("nsupdate -k #{KEYFILE} -v #{OUTPUTFILE} ")
+  output=`nsupdate -k #{KEYFILE} -v #{OUTPUTFILE} `
+  
+  returnMsg = {'message' => output, 'exitcode' => $?.exitstatus}
+  
+  #puts JSON.pretty_generate(returnMsg)
+  
+        
+  return returnMsg
   
   
 end
@@ -99,8 +111,8 @@ if subdomain.empty?
   return -1
 else
   genfileDel(subdomain)
-  nsupdate
-  return 0
+  
+  return nsupdate
 end
 end
 
@@ -109,7 +121,7 @@ end
 	#zone, ns, record
 
 #standard req
-#recordAdd("kube-system","ayam")
+#puts JSON.pretty_generate (recordAdd("lala2","ayam"))
 #without ns
 #recordAdd("","kambing")
 #without subdomain

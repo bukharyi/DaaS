@@ -1,5 +1,7 @@
 require 'sinatra'
 require "sinatra/namespace"
+require 'json'
+
 require_relative './func.rb'
 
 set :bind, '0.0.0.0'
@@ -24,16 +26,48 @@ namespace '/api/v1' do
 	get '/lb/node/' do
 	end
 
-post '/record/add' do
+post '/record' do
   #recieved domain 
   #recieved namespace
   "namespace '#{params[:namespace]}', domain '#{params[:domain]}'"
   
-  recordAdd("#{params[:namespace]}", "#{params[:domain]}" ) 
-  status 201
-  body "successful add"
+  output=recordAdd("#{params[:namespace]}", "#{params[:domain]}" ) 
+  
+  if output['exitcode']==0
+    status 201
+    body JSON.pretty_generate(output)
+ else
+    status 404
+    body JSON.pretty_generate(output)
+  
+ end
+   
   
  
-end
+end#end POST /record/add/
+
+
+  delete '/record' do
+    #recieved domain 
+    
+    output=recordDelete("#{params[:domain]}" ) 
+    domain="#{params[:domain]}"
+    
+    if .empty?
+      status 404
+      body "Error, empty request"
+      elseif ['exitcode']==0 
+      status 201
+      body JSON.pretty_generate(output)
+    else 
+      status 404
+      body JSON.pretty_generate(output)
+   end
+     
+    
+   
+  end#end POST /record/add/
+
+
 
 end

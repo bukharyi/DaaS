@@ -1,0 +1,5 @@
+server 192.168.138.3
+zone focus.my 
+update del fe5108e827afdb55a46f.bukhary.focus.my 
+show 
+send
