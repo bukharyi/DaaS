@@ -2,9 +2,9 @@ require 'csv'
 require 'json'
 require 'json'
 require 'sysrandom'
-CSVFILE	="nodes.csv"
-KEYFILE	="ddns.key"
-OUTPUTFILE="input.txt"
+CSVFILE	="./data/nodes.csv"
+KEYFILE	="./data/ddns.key"
+OUTPUTFILE="./data/input.txt"
 PRIMARYNS="192.168.138.3"
 ZONE="focus.my"
 
