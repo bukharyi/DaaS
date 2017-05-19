@@ -29,7 +29,7 @@ namespace '/api/v1' do
 post '/record' do
   #recieved domain 
   #recieved namespace
-  "namespace '#{params[:namespace]}', domain '#{params[:domain]}'"
+  #"namespace '#{params[:namespace]}', domain '#{params[:domain]}'"
   
   output=recordAdd("#{params[:namespace]}", "#{params[:domain]}" ) 
   
@@ -53,7 +53,7 @@ end#end POST /record/add/
     output=recordDelete("#{params[:domain]}" ) 
     domain="#{params[:domain]}"
     
-    if .empty?
+    if domain.empty?
       status 404
       body "Error, empty request"
       elseif ['exitcode']==0 
