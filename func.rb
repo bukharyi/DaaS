@@ -27,11 +27,9 @@ def domainList(namespace)
   statement = "SELECT * FROM domain WHERE  namespace=?"  
   errorcode, output=sqlExecute(statement,paramArr)
   
-  return errorcode,output
-    
+  return errorcode,output   
     
 end
-
 
 ########################
 ##Add domain
@@ -53,8 +51,7 @@ def domainAdd(namespace, domain)
     else
       fqdn=domain
     end
-  
- 
+   
     genfileAdd(fqdn)    
     errorcode,output=nsupdate
     
@@ -110,7 +107,6 @@ def domainDelete(fqdn)
 return errorcode, output
 
 end
-
 
 ########################
 ## test domain

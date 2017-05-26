@@ -1,2 +1,2 @@
 # DaaS
-Kubernetes ingress Bind9
+Kubernetes ingress public Bind9 WS
