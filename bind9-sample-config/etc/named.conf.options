@@ -1,0 +1,45 @@
+options {
+	directory "/var/cache/bind";
+	allow-query { any; };				#to allow only specific hosts to use the DNS server
+
+        zone-statistics yes;				#collect statitistics
+        statistics-file "/var/log/bind/named.stats";
+	rrset-order {order cyclic;};			#cyclic=> round-robin DNS.
+
+
+	recursion yes;					#enables recursive queries
+	allow-recursion { trusted; };			#allow recursive queries from "trusted" clients
+	listen-on { 192.168.138.3; };			#ns1 private ip address - listen to this address only
+	allow-transfer { none; };			#disable zone transfer by default	
+
+
+
+	// If there is a firewall between you and nameservers you want
+	// to talk to, you may need to fix the firewall to allow multiple
+	// ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+	// If your ISP provided one or more IP addresses for stable 
+	// nameservers, you probably want to use them as forwarders.  
+	// Uncomment the following block, and insert the addresses replacing 
+	// the all-0's placeholder.
+
+	forwarders {
+	 	8.8.8.8;
+		10.1.1.107;
+		10.1.1.108;
+	};
+
+	//========================================================================
+	// If BIND logs error messages about the root key being expired,
+	// you will need to update your keys.  See https://www.isc.org/bind-keys
+	//========================================================================
+        dnssec-enable no;              //so 10.1.1.107 will not say NS: got insecure response; parent indicates it should be secure
+        dnssec-validation no;
+
+
+	auth-nxdomain no;    # conform to RFC1035
+	listen-on-v6 { any; };
+};
+acl "trusted" {
+	192.168.0.0/16;
+};
