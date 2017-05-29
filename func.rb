@@ -129,7 +129,8 @@ def domainTest(domain, nameserver)
     
   else
       output=`nslookup  #{domain} #{nameserver} 2>&1`
-      output.gsub! /\t/,' '
+	ap output 
+     output.gsub! /\t/,' '
       output=output.split("\n")
       if $?.success?
         errorcode  = 0
@@ -261,7 +262,7 @@ end
 #empty ns request=ERROR
 #ap domainTest("kambing.kube-system.focus.my",'')
 #wrong ns request=ERROR
-#ap domainTest("kambing.com.my",'192.168.138.3-')
+ap domainTest("lb.focus.my",'10.1.70.132')
 
 
 #both empty=ERROR
@@ -282,5 +283,4 @@ end
 
 #domainList("kube-system")
 #ap domainList("")
-ap genfileAdd("7.focus.mmy")
 

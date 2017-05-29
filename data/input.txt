@@ -1,7 +1,7 @@
 server 10.1.70.132
 zone focus.my 
-update add 7.focus.mmy 60000 A 10.1.70.135 
-update add 7.focus.mmy 60000 A 10.1.70.136 
-update add 7.focus.mmy 60000 A 10.1.70.137 
+update add k8sapiserver.focus.my 60000 A 10.1.70.135 
+update add k8sapiserver.focus.my 60000 A 10.1.70.136 
+update add k8sapiserver.focus.my 60000 A 10.1.70.137 
 show 
 send
