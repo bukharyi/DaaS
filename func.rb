@@ -2,12 +2,13 @@ require 'json'
 require 'awesome_print'
 require 'sysrandom'
 require 'sqlite3'
-DBLOCATION      = "./data/daas.db"
+PROGPATH	="/opt/DaaS"
+DBLOCATION      = "#{PROGPATH}/data/daas.db"
 #CSVNODEFILE	    = "./data/nodes.csv" # list of nodes
 #CSVDOMAINFILE   = "./data/domain.csv" # list of domain
-KEYFILE	        = "./data/ddns.key"
-OUTPUTFILE      = "./data/input.txt"
-PRIMARYNS       = "192.168.138.3"
+KEYFILE	        = "#{PROGPATH}/data/ddns.key"
+OUTPUTFILE      = "#{PROGPATH}/data/input.txt"
+PRIMARYNS       = "10.1.70.132"
 ZONE            = "focus.my"
 
 
@@ -19,12 +20,16 @@ ZONE            = "focus.my"
 #namespace = {ns, nil}
 def domainList(namespace)
 
-  if namespace.empty?
-    return -1, {'message'=>"ERROR namespace empty",'display'=> ""}
-  end
-  
+  if namespace=="all"
+
+  paramArr  =[]
+    statement = "SELECT * FROM domain ORDER BY namespace ASC, domain ASC"
+  else 
   paramArr  = [namespace]
   statement = "SELECT * FROM domain WHERE  namespace=?"  
+  end
+
+puts statement
   errorcode, output=sqlExecute(statement,paramArr)
   
   return errorcode,output   

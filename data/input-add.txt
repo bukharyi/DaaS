@@ -1,6 +1,6 @@
-server 192.168.138.3
+server 10.1.70.132 
 zone focus.my 
-update add kambing.focus.my 60000 A 192.168.138.4 
-update add kambing.focus.my 60000 A 192.168.138.5 
+update add 1dashboard.focus.my 60000 A 10.1.70.134
+update add 1dashboard.focus.my 60000 A 10.1.70.135 
 show 
 send

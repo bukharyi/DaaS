@@ -121,7 +121,7 @@ end
 get '/domainlist/:namespace' do
   
   namespace="#{params['namespace']}"
-  
+ puts "THIS IS NAMESPACE #{namespace}"
   #execute the test
   errorcode,output=domainList(namespace)
       
